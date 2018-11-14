@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using RandomGraphGenerator.Utils;
 
 namespace RandomGraphGenerator
 {
@@ -7,73 +8,48 @@ namespace RandomGraphGenerator
     {
         private string outputDir;
         private int numberOfExamples;
-        private int minimalGraphSize;
-        private int maximalGraphSize;
+        private int minGraphSize;
+        private int maxGraphSize;
+
+        private readonly DirectoryCreator directoryCreator = new DirectoryCreator();
+        private readonly RandomGraphCreator randomGraphCreator = new RandomGraphCreator();
 
         public RandomGraphGenerator(string outputDir, int numberOfExamples, int minimalGraphSize, int maximalGraphSize)
         {
             this.outputDir = outputDir;
             this.numberOfExamples = numberOfExamples;
-            this.minimalGraphSize = minimalGraphSize;
-            this.maximalGraphSize = maximalGraphSize;
+            this.minGraphSize = minimalGraphSize;
+            this.maxGraphSize = maximalGraphSize;
         }
 
         public void Generate()
         {
-            CreateOutputDir();
-
-            for (int i = 0; i < numberOfExamples; i++)
+            if (!directoryCreator.SafelyCreate(outputDir))
             {
-
-            }
-        }
-
-        private void CreateOutputDir()
-        {
-            if (Directory.Exists(outputDir))
-            {
-                Console.Write($"Directory {outputDir} already exists. Do you want to remove it? [y/n] ");
-                var response = Console.ReadKey(false).Key;
-                if (Console.ReadKey(false).Key == ConsoleKey.Enter)
-                {
-                    if (response == ConsoleKey.Y)
-                    {
-                        Console.WriteLine();
-                        Console.WriteLine($"Removing {outputDir} directory.");
-                        try
-                        {
-                            Directory.Delete(outputDir);
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine($"Error occured while removing {outputDir} directory.");
-                            Console.WriteLine(ex.StackTrace);
-
-                            Environment.Exit(1);
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Exitting.");
-                        Environment.Exit(1);
-                    }
-                }
+                Environment.Exit(1);
             }
             else
             {
-                try
-                {
-                    Directory.CreateDirectory(outputDir);
-                    Environment.CurrentDirectory = outputDir;
+                Environment.CurrentDirectory = outputDir;
+            }
 
-                    Console.WriteLine(Environment.CurrentDirectory);
-                }
-                catch (Exception ex)
+            for (int i = 0; i < numberOfExamples; i++)
+            {
+                string exampleDir = $"{i + 1}";
+                if (!directoryCreator.SafelyCreate(exampleDir))
                 {
-                    Console.WriteLine($"Error occured while creating directory {outputDir}");
-                    Console.WriteLine(ex.StackTrace);
-
                     Environment.Exit(1);
+                }
+                else
+                {
+                    var graphA = randomGraphCreator.GenerateRandomGraph(minGraphSize, maxGraphSize);
+                    var graphB = randomGraphCreator.GenerateRandomGraph(graphA.Size, maxGraphSize);
+
+                    string graphAFile = $"{graphA.Size}_{graphB.Size}_A_{Config.ExampleFileKey}.csv";
+                    string graphBFile = $"{graphA.Size}_{graphB.Size}_B_{Config.ExampleFileKey}.csv";
+
+                    graphA.WriteToFile(Path.Join(exampleDir, graphAFile));
+                    graphB.WriteToFile(Path.Join(exampleDir, graphBFile));
                 }
             }
         }
