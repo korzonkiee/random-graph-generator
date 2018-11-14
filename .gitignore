@@ -15,6 +15,7 @@ nupkg/
 *.sln.docstates
 
 # Build results
+*.csv
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
