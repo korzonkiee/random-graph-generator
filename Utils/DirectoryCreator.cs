@@ -10,28 +10,20 @@ namespace RandomGraphGenerator.Utils
             if (Directory.Exists(outputDir))
             {
                 Console.Write($"Directory {outputDir} already exists. Do you want to override it? [y/n] ");
-                var response = Console.ReadKey(false).Key;
-                if (Console.ReadKey(false).Key == ConsoleKey.Enter)
+                var response = Console.ReadLine();
+                if (response == "y" || response == "Y")
                 {
-                    if (response == ConsoleKey.Y)
+                    Console.WriteLine($"Removing {outputDir} directory.");
+                    try
                     {
-                        Console.WriteLine();
-                        Console.WriteLine($"Removing {outputDir} directory.");
-                        try
-                        {
-                            Directory.Delete(outputDir, recursive : true);
-                            return SafelyCreate(outputDir);
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine($"Error occured while removing {outputDir} directory.");
-                            Console.WriteLine(ex.StackTrace);
-
-                            return false;
-                        }
+                        Directory.Delete(outputDir, recursive : true);
+                        return SafelyCreate(outputDir);
                     }
-                    else
+                    catch (Exception ex)
                     {
+                        Console.WriteLine($"Error occured while removing {outputDir} directory.");
+                        Console.WriteLine(ex.StackTrace);
+
                         return false;
                     }
                 }
