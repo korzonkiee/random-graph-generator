@@ -10,16 +10,19 @@ namespace RandomGraphGenerator
         private int numberOfExamples;
         private int minGraphSize;
         private int maxGraphSize;
+        private int edgeProbability;
 
         private readonly DirectoryCreator directoryCreator = new DirectoryCreator();
         private readonly RandomGraphCreator randomGraphCreator = new RandomGraphCreator();
 
-        public RandomGraphGenerator(string outputDir, int numberOfExamples, int minimalGraphSize, int maximalGraphSize)
+        public RandomGraphGenerator(string outputDir, int numberOfExamples,
+            int minimalGraphSize, int maximalGraphSize, int edgeProbability)
         {
             this.outputDir = outputDir;
             this.numberOfExamples = numberOfExamples;
             this.minGraphSize = minimalGraphSize;
             this.maxGraphSize = maximalGraphSize;
+            this.edgeProbability = edgeProbability;
         }
 
         public void Generate()
@@ -42,8 +45,8 @@ namespace RandomGraphGenerator
                 }
                 else
                 {
-                    var graphA = randomGraphCreator.GenerateRandomGraph(minGraphSize, maxGraphSize);
-                    var graphB = randomGraphCreator.GenerateRandomGraph(graphA.Size, maxGraphSize);
+                    var graphA = randomGraphCreator.GenerateRandomGraph(minGraphSize, maxGraphSize, edgeProbability);
+                    var graphB = randomGraphCreator.GenerateRandomGraph(graphA.Size, maxGraphSize, edgeProbability);
 
                     string graphAFile = $"{graphA.Size}_{graphB.Size}_A_{Config.ExampleFileKey}.csv";
                     string graphBFile = $"{graphA.Size}_{graphB.Size}_B_{Config.ExampleFileKey}.csv";

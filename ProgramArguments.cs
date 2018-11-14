@@ -15,5 +15,8 @@ namespace RandomGraphGenerator
 
         [Option('h', "maximalSize", Required = true, HelpText = "Maximal graph size.")]
         public int MaximalSize { get; set; }
+
+        [Option('d', "edgeProbability", Required = false, HelpText = "Percentage probability of edge between two vertices (0 - 100)")]
+        public int EdgeProbability { get; set; }
     }
 }

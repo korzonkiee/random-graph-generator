@@ -32,7 +32,14 @@ namespace RandomGraphGenerator
                 return;
             }
 
-            new RandomGraphGenerator(args.OutputDir, args.NumberOfExamples, args.MinimalSize, args.MaximalSize)
+            if (args.EdgeProbability < 0 || args.EdgeProbability > 100)
+            {
+                Console.WriteLine($"Edge probability must be value between 0 and 100");
+                return;
+            }
+
+            new RandomGraphGenerator(args.OutputDir, args.NumberOfExamples,
+                    args.MinimalSize, args.MaximalSize, args.EdgeProbability)
                 .Generate();
         }
     }
