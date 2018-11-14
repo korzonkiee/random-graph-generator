@@ -32,7 +32,8 @@ namespace RandomGraphGenerator
                 return;
             }
 
-            new RandomGraphGenerator(args.NumberOfExamples, args.MinimalSize, args.MaximalSize);
+            new RandomGraphGenerator(args.OutputDir, args.NumberOfExamples, args.MinimalSize, args.MaximalSize)
+                .Generate();
         }
     }
 }
