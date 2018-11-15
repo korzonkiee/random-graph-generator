@@ -27,10 +27,21 @@ namespace RandomGraphGenerator
             var random = new Random();
             var adjacencyMatrix = new byte[size, size];
 
+            // Make graph connected
+            for (int row = 0; row < size - 1; row++)
+            {
+                int col = random.Next(1 + row, size);
+                adjacencyMatrix[row, col] = 1;
+            }
+
             for (int row = 0; row < size; row++)
             {
                 for (int col = 1 + row; col < size; col++)
                 {
+                    // Prevent from disconnecting
+                    if (adjacencyMatrix[row, col] == 1)
+                        continue;
+
                     byte randEdge = random.NextDouble() < (edgeProbability / 100f) ? edge : noEdge;
                     adjacencyMatrix[row, col] = randEdge;
                     adjacencyMatrix[col, row] = randEdge;
