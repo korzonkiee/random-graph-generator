@@ -10,5 +10,10 @@ namespace RandomGraphGenerator.Utils
             int randomSize = random.Next(minSize, maxSize + 1);
             return Graph.Random(randomSize, edgeProbability);
         }
+
+        public Graph GenerateGraphOfSize(int size, int edgeProbability)
+        {
+            return Graph.Random(size, edgeProbability);
+        }
     }
 }

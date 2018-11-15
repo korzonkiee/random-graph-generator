@@ -45,8 +45,20 @@ namespace RandomGraphGenerator
                 }
                 else
                 {
-                    var graphA = randomGraphCreator.GenerateRandomGraph(minGraphSize, maxGraphSize, edgeProbability);
-                    var graphB = randomGraphCreator.GenerateRandomGraph(graphA.Size, maxGraphSize, edgeProbability);
+                    var graph1 = randomGraphCreator.GenerateRandomGraph(minGraphSize, maxGraphSize, edgeProbability);
+                    var graph2 = randomGraphCreator.GenerateRandomGraph(minGraphSize, maxGraphSize, edgeProbability);
+
+                    Graph graphA, graphB;
+                    if (graph1.Size > graph2.Size)
+                    {
+                        graphB = graph1;
+                        graphA = graph2;
+                    }
+                    else
+                    {
+                        graphB = graph2;
+                        graphA = graph1;
+                    }
 
                     string graphAFile = $"{graphA.Size}_{graphB.Size}_A_{Config.ExampleFileKey}.csv";
                     string graphBFile = $"{graphA.Size}_{graphB.Size}_B_{Config.ExampleFileKey}.csv";
