@@ -39,7 +39,8 @@ namespace RandomGraphGenerator
             }
 
             new RandomGraphGenerator(args.OutputDir, args.NumberOfExamples,
-                    args.MinimalSize, args.MaximalSize, args.EdgeProbability)
+                    args.MinimalSize, args.MaximalSize, args.EdgeProbability,
+                    args.Iterate)
                 .Generate();
         }
     }
